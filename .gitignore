@@ -14,4 +14,5 @@ build_webpack
 .DS_Store
 .env
 npm-debug.log
+yarn-error.log
 .truffle-solidity-loader
