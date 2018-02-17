@@ -4,6 +4,7 @@ import Dharma from "@dharmaprotocol/dharma.js";
 import BigNumber from "bignumber.js";
 
 import { Button, FormGroup, ControlLabel, FormControl, HelpBlock, Well } from "react-bootstrap";
+import { withAlert } from 'react-alert'
 
 import DebtKernel from '../build/contracts/DebtKernel.json'
 import RepaymentRouter from '../build/contracts/RepaymentRouter.json'
@@ -46,6 +47,7 @@ class App extends Component {
   componentWillMount() {
     // Get network provider and web3 instance.
     // See utils/getWeb3 for more info.
+    // throw new Error('test error wrapper');
 
     getWeb3
     .then(results => {
@@ -95,16 +97,25 @@ class App extends Component {
           termLength:  App.eventToBigNumber(e)
       });
   }
-
-  async onGenerateDebtOrder(e) {
-      const { principalAmount, principalTokenSymbol, interestRate, amortizationUnit, termLength } = this.state;
-      // MARK: validate that principalAmount > 0
+  static validateDebtOrder({ principalAmount, principalTokenSymbol,
+                             interestRate, amortizationUnit, termLength }) {
       if (principalAmount <= 0) {
         throw new Error(`Principals must be > 0, not ${principalAmount}`)
       } else if (interestRate <= 0) {
         throw new Error(`interestRate must be > 0, not ${interestRate}`)
       } else if (termLength <= 0) {
         throw new Error(`termLength must be > 0, not ${termLength}`)
+      }
+  }
+  async onGenerateDebtOrder(e) {
+      const { principalAmount, principalTokenSymbol, interestRate, amortizationUnit, termLength } = this.state;
+      // MARK: validate state
+      try {
+        App.validateDebtOrder({ principalAmount, principalTokenSymbol,
+                                interestRate, amortizationUnit, termLength })
+      } catch(err) {
+         this.props.alert.error(`${err}`)
+         return
       }
       const dharma = this.state.dharma;
 
@@ -261,4 +272,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default withAlert(App)

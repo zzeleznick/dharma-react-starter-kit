@@ -6,8 +6,8 @@ class ErrorBoundary extends Component {
     this.state = { hasError: false };
   }
 
-  // componentDidCatch(error, info) {
-unstable_handleError(error, info) {
+componentDidCatch(error, info) {
+// unstable_handleError(error, info) {
     // Display fallback UI
     this.setState({ hasError: true });
     // You can also log the error to an error reporting service
