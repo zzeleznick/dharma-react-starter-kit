@@ -134,16 +134,24 @@ class App extends Component {
 
       this.setState({ debtOrder: JSON.stringify(debtOrder) });
   }
-
-  async onSignDebtOrder(e) {
-      if (!this.state.debtOrder) {
+  static validateDebtOrderObj(debtOrder) {
+      if (!debtOrder) {
           throw new Error("No debt order has been generated yet!");
       }
+      return JSON.parse(debtOrder);
+  }
 
-      const debtOrder = JSON.parse(this.state.debtOrder);
+  async onSignDebtOrder(e) {
+      let debtOrder;
+      try {
+        debtOrder = App.validateDebtOrderObj(this.state.debtOrder);
+      } catch(err) {
+        this.props.alert.error(`${err}`)
+        return
+      }
 
       debtOrder.principalAmount = new BigNumber(debtOrder.principalAmount);
-        debtOrder.debtor = this.state.accounts[0];
+      debtOrder.debtor = this.state.accounts[0];
 
       // Sign as debtor
       const debtorSignature = await this.state.dharma.sign.asDebtor(debtOrder);
