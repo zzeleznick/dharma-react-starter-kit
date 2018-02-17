@@ -16,7 +16,7 @@
 
 */
 
-pragma solidity 0.4.18;
+pragma solidity 0.4.19;
 
 import "./libraries/PermissionsLib.sol";
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
