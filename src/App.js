@@ -33,11 +33,13 @@ class App extends Component {
     this.onSignDebtOrder = this.onSignDebtOrder.bind(this);
 
     this.state = {
-      storageValue: 0,
       web3: null,
       dharma: null,
+      principalAmount: new BigNumber(0),
       principalTokenSymbol: "REP",
       amortizationUnit: "hours",
+      interestRate: new BigNumber(0),
+      termLength: new BigNumber(0)
     }
   }
 
@@ -57,89 +59,97 @@ class App extends Component {
     .catch((e) => {
       console.log('Error instantiating Dharma contracts:' + e);
     })
+
   }
-  
+
+  static eventToBigNumber(e) {
+    return new BigNumber(e.target.value || 0)
+  }
+
   handlePrincipalAmountChange(e) {
       this.setState({
-          principalAmount: e.target.value
+          principalAmount: App.eventToBigNumber(e)
       });
   }
-  
+
   handlePrincipalTokenChange(e) {
       this.setState({
           principalTokenSymbol: e.target.value
       });
   }
-  
+
   handleInterestRateChange(e) {
       this.setState({
-          interestRate: e.target.value
+          interestRate: App.eventToBigNumber(e)
       });
   }
-  
+
   handleInstallmentsTypeChange(e) {
       this.setState({
           amortizationUnit: e.target.value
       });
   }
-  
+
   handleTermLengthChange(e) {
       this.setState({
-          termLength: e.target.value
+          termLength:  App.eventToBigNumber(e)
       });
   }
-  
+
   async onGenerateDebtOrder(e) {
       const { principalAmount, principalTokenSymbol, interestRate, amortizationUnit, termLength } = this.state;
-      
+      // MARK: validate that principalAmount > 0
+      if (principalAmount <= 0) {
+        throw new Error(`Principals must be > 0, not ${principalAmount}`)
+      }
       const dharma = this.state.dharma;
-      
+
       const tokenRegistry = await dharma.contracts.loadTokenRegistry();
       const principalToken = await tokenRegistry.getTokenAddress.callAsync(principalTokenSymbol);
-      
+
       const simpleInterestLoan = {
           principalToken,
-          principalAmount: new BigNumber(principalAmount),
-          interestRate: new BigNumber(interestRate),
+          principalAmount,
+          interestRate,
           amortizationUnit,
-          termLength: new BigNumber(termLength)
+          termLength
       };
-      
+
       const debtOrder = await dharma.adapters.simpleInterestLoan.toDebtOrder(simpleInterestLoan);
-      
+
       this.setState({ debtOrder: JSON.stringify(debtOrder) });
   }
-  
+
   async onSignDebtOrder(e) {
       if (!this.state.debtOrder) {
           throw new Error("No debt order has been generated yet!");
       }
-      
+
       const debtOrder = JSON.parse(this.state.debtOrder);
-          
+
       debtOrder.principalAmount = new BigNumber(debtOrder.principalAmount);
-        debtOrder.debtor = this.state.accounts[0];        
-    
-      // Sign as debtor 
+        debtOrder.debtor = this.state.accounts[0];
+
+      // Sign as debtor
       const debtorSignature = await this.state.dharma.sign.asDebtor(debtOrder);
-      const signedDebtOrder = Object.assign({ debtorSignature }, debtOrder);   
-            
+      const signedDebtOrder = Object.assign({ debtorSignature }, debtOrder);
+
       this.setState({ debtOrder: JSON.stringify(signedDebtOrder) });
   }
 
   async instantiateDharma() {
     const networkId = await promisify(this.state.web3.version.getNetwork)();
     const accounts = await promisify(this.state.web3.eth.getAccounts)();
-    
+
     if (!(networkId in DebtKernel.networks &&
           networkId in RepaymentRouter.networks &&
           networkId in TokenTransferProxy.networks &&
-          networkId in TokenRegistry.networks && 
+          networkId in TokenRegistry.networks &&
           networkId in DebtToken.networks &&
           networkId in TermsContractRegistry.networks)) {
         throw new Error("Cannot find Dharma smart contracts on current Ethereum network.");
     }
-    
+
     const dharmaConfig = {
         kernelAddress: DebtKernel.networks[networkId].address,
         repaymentRouterAddress: RepaymentRouter.networks[networkId].address,
@@ -148,9 +158,9 @@ class App extends Component {
         debtTokenAddress: DebtToken.networks[networkId].address,
         termsContractRegistry: TermsContractRegistry.networks[networkId].address
     }
-    
+
     const dharma = new Dharma(this.state.web3.currentProvider, dharmaConfig);
-    
+
     this.setState({ dharma, accounts });
   }
 
@@ -176,8 +186,8 @@ class App extends Component {
                </FormGroup>
                <FormGroup controlId="formControlsSelect">
                   <ControlLabel>Principal Token</ControlLabel>
-                  <FormControl 
-                    componentClass="select" 
+                  <FormControl
+                    componentClass="select"
                     placeholder="select"
                     onChange={this.handlePrincipalTokenChange}
                 >
@@ -199,7 +209,7 @@ class App extends Component {
                  </FormGroup>
                  <FormGroup controlId="formControlsSelect">
                     <ControlLabel>Intstallments Type</ControlLabel>
-                    <FormControl 
+                    <FormControl
                         componentClass="select"
                         placeholder="select"
                         onChange={this.handleInstallmentsTypeChange}
@@ -237,7 +247,7 @@ class App extends Component {
                     Sign Debt Order
                   </Button>
                   <code>{this.state.debtOrder}</code>
-                  
+
              </form>
             </div>
           </div>
