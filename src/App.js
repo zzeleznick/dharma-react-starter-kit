@@ -101,6 +101,10 @@ class App extends Component {
       // MARK: validate that principalAmount > 0
       if (principalAmount <= 0) {
         throw new Error(`Principals must be > 0, not ${principalAmount}`)
+      } else if (interestRate <= 0) {
+        throw new Error(`interestRate must be > 0, not ${interestRate}`)
+      } else if (termLength <= 0) {
+        throw new Error(`termLength must be > 0, not ${termLength}`)
       }
       const dharma = this.state.dharma;
 
