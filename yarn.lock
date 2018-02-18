@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@dharmaprotocol/dharma.js@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@dharmaprotocol/dharma.js/-/dharma.js-0.0.12.tgz#ed3bcda9002bfb28792f8c964c912399cd61c1bc"
+"@dharmaprotocol/dharma.js@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@dharmaprotocol/dharma.js/-/dharma.js-0.0.13.tgz#71c508eb46e61a0223fad6395f40b4699edd9219"
   dependencies:
     bignumber.js "^5.0.0"
     ethereumjs-util "^5.1.4"

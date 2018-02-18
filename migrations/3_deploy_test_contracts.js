@@ -33,6 +33,7 @@ module.exports = (deployer, network, accounts) => {
                 DUMMY_TOKEN_DECIMALS,
                 DUMMY_TOKEN_SUPPLY,
             );
+            // setBalance (from DummyToken.sol)
             await tokenRegistry.setTokenAddress("REP", dummyREPToken.address,
                 { from: accounts[0] });
 
