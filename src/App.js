@@ -3,7 +3,7 @@ import promisify from "tiny-promisify"
 import Dharma from "@dharmaprotocol/dharma.js";
 import BigNumber from "bignumber.js";
 
-import { Button, FormGroup, ControlLabel, FormControl, HelpBlock, Well } from "react-bootstrap";
+import { Button, FormGroup, ControlLabel, FormControl, HelpBlock } from "react-bootstrap";
 import { withAlert } from 'react-alert'
 
 import DebtKernel from '../build/contracts/DebtKernel.json'
