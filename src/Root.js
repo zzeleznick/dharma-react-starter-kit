@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { Provider as AlertProvider } from 'react-alert'
+// import Main from './Main'
 import App from './App'
 import ErrorBoundary from './ErrorBoundary'
 import AlertTemplateCustom from './AlertTemplateCustom'
@@ -16,11 +17,11 @@ const options = {
 class Root extends Component  {
   render () {
     return (
-      <AlertProvider template={AlertTemplateCustom} {...options}>
-          <ErrorBoundary>
+      <ErrorBoundary>
+        <AlertProvider template={AlertTemplateCustom} {...options}>
           <App />
-          </ErrorBoundary>
-      </AlertProvider>
+        </AlertProvider>
+      </ErrorBoundary>
     )
   }
 }

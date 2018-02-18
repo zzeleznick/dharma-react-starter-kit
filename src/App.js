@@ -193,7 +193,7 @@ class App extends Component {
         <main className="container">
           <div className="pure-g">
             <div className="pure-u-1-1">
-            <h1>Dharma Javascript Library Starter Kit</h1>
+            <h1>ShortSell App</h1>
             <h3><b>Generate a simple loan request:</b></h3>
             <form>
                <FormGroup
