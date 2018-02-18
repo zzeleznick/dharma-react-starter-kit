@@ -24,3 +24,19 @@ code {
 .pure-form input[type="text"]:focus {
   border-color: #0c1a2b;
 }
+
+input[type="number"]::-webkit-input-placeholder {
+  color: orange !important;
+}
+
+nav {
+  background-color: #1f2b35;
+}
+
+nav a {
+  color: white;/*#007bff;*/
+}
+
+nav a:hover {
+  color: gray;/*#007bff;*/
+}

@@ -194,7 +194,7 @@ class App extends Component {
           <div className="pure-g">
             <div className="pure-u-1-1">
             <h1>ShortSell App</h1>
-            <h3><b>Generate a simple loan request:</b></h3>
+            <h3><b>Create your ShortSell Option:</b></h3>
             <form>
                <FormGroup
                  controlId="formBasicText"
@@ -231,19 +231,17 @@ class App extends Component {
                    <HelpBlock>Specify your desired interest rate.</HelpBlock>
                  </FormGroup>
                  <FormGroup controlId="formControlsSelect">
-                    <ControlLabel>Intstallments Type</ControlLabel>
+                    <ControlLabel>Installment Period</ControlLabel>
                     <FormControl
                         componentClass="select"
                         placeholder="select"
                         onChange={this.handleInstallmentsTypeChange}
                     >
-                      <option value="hours">Hourly</option>
-                      <option value="days">Daily</option>
-                      <option value="weeks">Weekly</option>
-                      <option value="months">Monthly</option>
-                      <option value="years">Yearly</option>
+                      <option value="days">Days</option>
+                      <option value="months">Months</option>
+                      <option value="years">Years</option>
                     </FormControl>
-                    <HelpBlock>Specify how often you would like repayments to be due.</HelpBlock>
+                    <HelpBlock>Specify the Period of the agreement.</HelpBlock>
                   </FormGroup>
                   <FormGroup
                     controlId="formBasicText"
@@ -269,7 +267,7 @@ class App extends Component {
                   >
                     Sign Debt Order
                   </Button>
-                  <code>{this.state.debtOrder}</code>
+                  { this.state.debtOrder ? <code>{this.state.debtOrder}</code> : null }
 
              </form>
             </div>

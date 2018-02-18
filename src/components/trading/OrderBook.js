@@ -123,7 +123,7 @@ class OrderBook extends React.Component {
           <TradingUIScrollingContent scrollerRef={c => { this.scroller = ReactDOM.findDOMNode(c) }} >
             {/* ASKS TABLE */}
             <TradingUIOrderTable
-              style={{marginTop: '-2.2em'}}
+              style={{marginTop: '1em'}}
               showSizeBar={showSizeBar}
               headerLabels={[borrowedLabel, collateralLabel, repaymentAmountLabel,
                 repaymentUnitLabel,
