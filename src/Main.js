@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { Switch, Route } from 'react-router-dom'
 import App from './App'
 import Header from './Header'
-import OrderBook from './components/OrderBook'
+import RealTimeOrderBook from './components/RealTimeOrderBook'
 
 import { Provider as AlertProvider } from 'react-alert'
 import AlertTemplateCustom from './AlertTemplateCustom'
@@ -35,7 +35,7 @@ const Main = () => (
   <Header />
     <Switch>
       <Route exact path='/' component={WrappedApp}/>
-      <Route path='/orders' component={OrderBook}/>
+      <Route path='/orders' component={RealTimeOrderBook}/>
     </Switch>
   </main>
 )
