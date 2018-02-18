@@ -25,7 +25,7 @@ const TradingUIOrder = ({showSizeBar, side, size, sizeBarMaxWidth, sizeBarMaxSiz
       e.preventDefault()
       onClick(order, side)
     }}>
-      <TradingUIOrderSizeBar {...{showSizeBar, side, size, sizeBarMaxWidth, sizeBarMaxSize, sizeBarUnitSize}} />
+      { showSizeBar ? <TradingUIOrderSizeBar {...{showSizeBar, side, size, sizeBarMaxWidth, sizeBarMaxSize, sizeBarUnitSize}} /> : null  }
       {dataConfigs.map(({propName = 'data', format, getter, renderer}, i) =>
         <TradingUIOrderTableData key={i}>
           {renderer({ side, format, [propName]: getter(order) })}

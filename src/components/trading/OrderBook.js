@@ -19,6 +19,7 @@ import TradingUIOrderTable from './TradingUIOrderTable'
 import TradingUIOrder from './TradingUIOrder'
 import PrettySize from './PrettySize'
 import PrettyPrice from './PrettyPrice'
+import PrettyText from './PrettyText'
 import FakePrice from './FakePrice'
 import PrettyPosition from './PrettyPosition'
 import Spread from './Spread'
@@ -75,14 +76,14 @@ class OrderBook extends React.Component {
       asks, bids, depth, headerText, spreadText, showSizeBar,
       sizeLabel, priceLabel, positionLabel,
       borrowedLabel, collateralLabel, repaymentUnitLabel, rateLabel,
-      termLength, reputationLabel,
+      termLength, reputationLabel, repaymentAmountLabel,
       onClickOrder,
       sizeBarMaxWidth, sizeBarMaxSize, sizeBarUnitSize,
       getSize, getPrice, getPosition, getBorrowed,
       getCollateral, getRepaidAmount, getRepaidAsset,
       getRate, getDuration, getReputation,
       sizeFormat, priceFormat, positionFormat, spreadFormat,
-      renderSize, renderPrice, renderPosition, renderValue
+      renderSize, renderPrice, renderPosition, renderValue, renderText
     } = this.props
     const safeProps = R.omit(unsafePropNames, this.props)
     const visibleAsks = asks.slice(0, depth).reverse()
@@ -95,9 +96,9 @@ class OrderBook extends React.Component {
       {propName: 'borrowed', format: priceFormat, getter: getBorrowed, renderer: renderValue},
       {propName: 'collateral', format: priceFormat, getter: getCollateral, renderer: renderValue},
       {propName: 'repaidAmount', format: priceFormat, getter: getRepaidAmount, renderer: renderValue},
-      {propName: 'repaidAsset', format: priceFormat, getter: getRepaidAsset, renderer: renderValue},
+      {propName: 'repaidAsset', format: priceFormat, getter: getRepaidAsset, renderer: renderText},
       {propName: 'rate', format: priceFormat, getter: getRate, renderer: renderValue},
-      {propName: 'duration', format: priceFormat, getter: getDuration, renderer: renderValue},
+      {propName: 'duration', format: priceFormat, getter: getDuration, renderer: renderText},
       {propName: 'repuation', format: priceFormat, getter: getReputation, renderer: renderValue},
 
     ]
@@ -112,6 +113,7 @@ class OrderBook extends React.Component {
               {showSizeBar ? <TradingUITableHeading style={{width: sizeBarMaxWidth}} /> : null}
               <TradingUITableHeading>{borrowedLabel}</TradingUITableHeading>
               <TradingUITableHeading>{collateralLabel}</TradingUITableHeading>
+              <TradingUITableHeading>{repaymentAmountLabel}</TradingUITableHeading>
               <TradingUITableHeading>{repaymentUnitLabel}</TradingUITableHeading>
               <TradingUITableHeading>{rateLabel}</TradingUITableHeading>
               <TradingUITableHeading>{termLength}</TradingUITableHeading>
@@ -121,15 +123,16 @@ class OrderBook extends React.Component {
           <TradingUIScrollingContent scrollerRef={c => { this.scroller = ReactDOM.findDOMNode(c) }} >
             {/* ASKS TABLE */}
             <TradingUIOrderTable
-              style={{marginTop: '4em'}}
+              style={{marginTop: '-2.2em'}}
               showSizeBar={showSizeBar}
-              headerLabels={[borrowedLabel, collateralLabel, repaymentUnitLabel,
+              headerLabels={[borrowedLabel, collateralLabel, repaymentAmountLabel,
+                repaymentUnitLabel,
                 rateLabel, termLength, reputationLabel]
               /*[sizeLabel, priceLabel, positionLabel]*/}
             >
               {visibleAsks.map(order =>
                 <TradingUIOrder
-                  key={`${getCollateral(order)}_${getRepaidAmount(order)}_${getRepaidAsset(order)}`}
+                  key={`${order[0]}`}
                   side='sell'
                   order={order}
                   size={getSize(order)}
@@ -190,7 +193,7 @@ OrderBook.defaultProps = {
   bids: [],
   depth: Infinity,
   showSizeBar: false,
-  sizeBarMaxWidth: 50,
+  sizeBarMaxWidth: 10,
   sizeBarMaxSize: 1000,
   sizeBarUnitSize: 50,
   headerText: 'Order Book',
@@ -201,6 +204,7 @@ OrderBook.defaultProps = {
   borrowedLabel: 'Debt Size',
   collateralLabel: 'Collateral',
   repaymentUnitLabel: 'Repayment Token',
+  repaymentAmountLabel: 'Repayment Amount',
   rateLabel: 'Interest Rate',
   termLength: 'Term Length',
   reputationLabel: 'Reputation',
@@ -221,6 +225,7 @@ OrderBook.defaultProps = {
   renderSize: PrettySize,
   renderPrice: PrettyPrice,
   renderValue: FakePrice,
+  renderText: PrettyText,
   renderPosition: PrettyPosition
 }
 

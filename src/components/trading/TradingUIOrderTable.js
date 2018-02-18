@@ -4,7 +4,8 @@ import glamorous from 'glamorous'
 
 const Table = glamorous.table({
   width: '100%',
-  borderCollapse: 'collapse'
+  borderCollapse: 'collapse',
+  tableLayout: 'fixed'
 })
 
 const HiddenTableHead = glamorous.thead({

@@ -29,7 +29,7 @@ const PrettyPrice = ({price = 0, format, side}) => {
     digitsAfterDecimal
   ] = formattedSize.split('.').map(str => str.split(''))
   // return colorized version of price
-  return side
+  return side || true
     ? <span>
       <SideSecondary key='dbd' side={side}>{digitsBeforeDecimal}.</SideSecondary>
       <SidePrimary key='dad' side={side}>{digitsAfterDecimal}</SidePrimary>
